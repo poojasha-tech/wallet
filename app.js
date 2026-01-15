@@ -218,6 +218,11 @@ app.post("/transfer", async (req, res) => {
 app.get("/statement", async (req, res) => {
     const token = req.headers.authorization?.split(" ")[1];
     const decoded = verifyToken(token);
+    const {startDate,endDate} = req.query; // 2025-12-01 to 2025-12-31
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    end.setHours(23,59,59,999); // set to end of the day
+
     if (!decoded) {
         return res.status(401).send("unauthorised!")
     }
@@ -228,14 +233,19 @@ app.get("/statement", async (req, res) => {
             OR: [
                 { senderAccountNumber: accountNumber },
                 { receiverAccountNumber: accountNumber }
-            ]
+            ],
+            createdAt: { // createdAt > start and createdAt < end
+                gte: start,
+                lte: end
+            }
         }
     })
+    
     let csv = "date,amount,sender,receiver\n"
     transactions.forEach(tx => {
         csv += `${tx.createdAt} , ${tx.amount} , ${tx.senderAccountNumber} , ${tx.receiverAccountNumber} \n`
     });
-
+    
     res.setHeader("Content-Type", "text/csv");
     res.setHeader(
         "Content-Disposition",
