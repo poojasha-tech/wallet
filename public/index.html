@@ -1,0 +1,94 @@
+<!-- login page  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login To Digital Wallet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+    }
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+    .card {
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+    input {
+        width: 100%;
+        padding: 8px;
+        margin: 8px 0;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    button {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        background: #2563eb;
+        color: #fff;
+        cursor: pointer;
+    }
+    .msg {
+        margin-top: 8px;
+        color: #b91c1c;
+    }
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: #111827;
+        color: #fff;
+    }
+
+</style>
+<body>
+    <header>
+        <h1>Digital Wallet</h1>
+    </header>
+    <div class="container">
+        <div class="card">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="message" class="msg"></div>
+        </div>
+    </div>
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const messageDiv = document.getElementById('message');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simulate login validation
+            if(email === "user@example.com" && password === "password123") {
+                messageDiv.textContent = "Login successful!";
+                messageDiv.className = "msg success";
+            } else {
+                messageDiv.textContent = "Invalid email or password.";
+                messageDiv.className = "msg error";
+            }
+        });
+    </script>
+</body>
+</html>
