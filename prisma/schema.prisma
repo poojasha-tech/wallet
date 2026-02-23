@@ -32,5 +32,5 @@ model Trx {
   amount        Decimal
   createdAt     DateTime @default(now())
   senderAccountNumber     Int?
-  receiverAccountNumber    Int?
+  receiverAccountNumber    Int? // ? means it can be null, because for deposit and withdraw there is no sender or receiver
 }

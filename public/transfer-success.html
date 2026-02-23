@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Successful</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .card {
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+</style>
+    
+</style>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>Transaction Successful! 🎉 </h1>
+            <p>Your money has been transferred successfully.</p>
+            <p id="walletInfo"></p>
+            <button onclick="window.location.href='dashboard.html'">Back to Dashboard</button>
+
+        </div>
+    </div>
+
+    <script>
+        // Extract query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const walletId = urlParams.get('walletId'); 
+        const txInfo = urlParams.get('txInfo');
+
+        const walletInfoElement = document.getElementById('walletInfo');
+        walletInfoElement.textContent = `Wallet ID: ${walletId}`;
+      
+
+
+    </script>
+
+</body>
+</html>

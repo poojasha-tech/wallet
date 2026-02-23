@@ -12,7 +12,7 @@ app.use(express.json());   // body parsing middleware
 
 app.use(authRoutes);        // auth routes do not require token verification
 app.use(verifyUserToken);   // all routes below this line will require token verification
-app.use(api);
+app.use('/api', api);
   
 
 app.listen(port, () => {

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Transaction</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f3f4f6;
+    }
+
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    .card {
+        background: white;
+        padding: 16px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th,
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Transaction History</h2>
+            <button id="backToDashboard">⬅ Back to Dashboard</button>
+            <table>
+                <thead>
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Sender</th>
+                        <th>Receiver</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTableBody">
+                    <!-- Transactions will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            document.getElementById("backToDashboard").addEventListener("click", () => {
+                window.location.href = "dashboard.html";
+            });
+            const params = new URLSearchParams(window.location.search);
+            const startDate = params.get("startDate");
+            const endDate = params.get("endDate");
+            const myAccount = params.get("accountNumber");
+
+            const token = localStorage.getItem("AUTH_API");
+            const response = await fetch(`http://localhost:3000/api/transactions?startDate=${startDate}&endDate=${endDate}`, {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+            if (!response.ok) {
+                alert("Failed to fetch transactions");
+                return;
+            }
+            const data = await response.json();
+            const table = document.getElementById("transactionTableBody");
+
+            if (data.length === 0) {
+                table.innerHTML = "<tr><td colspan='4'>No transactions found for the selected date range.</td></tr>";
+                return;
+            }
+
+            data.forEach(txn => {
+                let type = "";
+                let displayAmount = txn.amount;
+
+                if (txn.senderAccountNumber == myAccount) {
+                    type = "Debit";
+                    displayAmount = "-" + txn.amount;
+                } else {
+                    type = "Credit";
+                    displayAmount = "+" + txn.amount;
+                }
+                
+                const row = `<tr>
+                    <td>${new Date(txn.createdAt).toLocaleDateString()}</td>
+                    <td>${type}</td>
+                    <td>${displayAmount}</td>
+                    <td>${txn.senderAccountNumber}</td>
+                    <td>${txn.receiverAccountNumber}</td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
